@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WaveformPlotterConfig">
+    <option name="liveWatchFrequency" value="1000" />
+    <option name="refreshFps" value="60" />
+    <option name="trackedVariables">
+      <list>
+        <option value="shoot_cmd_recv.load_mode" />
+        <option value="shoot_cmd_send.load_mode" />
+      </list>
+    </option>
+    <option name="variableNames">
+      <list>
+        <option value="shoot_cmd_recv.load_mode" />
+        <option value="shoot_cmd_send.load_mode" />
+      </list>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,93 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.la
+*.lib
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables and firmware images
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.bin
+*.hex
+*.srec
+*.axf
+*.lst
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.jdebug*
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Build directories
+build/
+cmake-build-*/
+Debug/
+Release/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile.tmp
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.orig
+openocd_pipe.log
+
+# Local tool and OS state
+.cache/
+.claude/
+.DS_Store
+Thumbs.db
+
+# IDE local state
+.idea/.gitignore
+.idea/vcs.xml
+.idea/shelf/
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.vscode/.cortex-debug.peripherals.state.json
+.vscode/.cortex-debug.registers.state.json
+.vscode/.ropeproject/
