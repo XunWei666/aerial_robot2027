@@ -27,17 +27,33 @@
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Release" />
+      <configuration PROFILE_NAME="Debug - Debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Debug" />
+      <configuration PROFILE_NAME="Release - Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Release" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="315b636d-acc9-47ff-b6a1-877e076b561b" name="更改" comment="UI画完">
-      <change beforePath="$PROJECT_DIR$/application/cmd/robot_cmd.c" beforeDir="false" afterPath="$PROJECT_DIR$/application/cmd/robot_cmd.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/robot_def.h" beforeDir="false" afterPath="$PROJECT_DIR$/application/robot_def.h" afterDir="false" />
+    <list default="true" id="315b636d-acc9-47ff-b6a1-877e076b561b" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mxproject" beforeDir="false" afterPath="$PROJECT_DIR$/.mxproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Inc/FreeRTOSConfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/FreeRTOSConfig.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32F407XX_FLASH.ld" beforeDir="false" afterPath="$PROJECT_DIR$/STM32F407XX_FLASH.ld" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/freertos.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/freertos.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/robot_task.h" beforeDir="false" afterPath="$PROJECT_DIR$/application/robot_task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/shoot/shoot.c" beforeDir="false" afterPath="$PROJECT_DIR$/application/shoot/shoot.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/shoot/shoot.h" beforeDir="false" afterPath="$PROJECT_DIR$/application/shoot/shoot.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basic_framework.ioc" beforeDir="false" afterPath="$PROJECT_DIR$/basic_framework.ioc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bsp/bsp_tools.c" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/bsp_tools.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bsp/bsp_tools.h" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/bsp_tools.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bsp/dwt/bsp_dwt.c" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/dwt/bsp_dwt.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/algorithm/user_lib.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/algorithm/user_lib.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/algorithm/user_lib.h" beforeDir="false" afterPath="$PROJECT_DIR$/modules/algorithm/user_lib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/motor/DMmotor/dmmotor.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/motor/DMmotor/dmmotor.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/referee/referee_task.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/referee/referee_task.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/referee/rm_referee.h" beforeDir="false" afterPath="$PROJECT_DIR$/modules/referee/rm_referee.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/referee/rm_referee.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/referee/rm_referee.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/startup_stm32f407xx.s" beforeDir="false" afterPath="$PROJECT_DIR$/startup_stm32f407xx.s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +78,12 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Src/can.c" root0="FORCE_HIGHLIGHTING" />
@@ -73,17 +94,24 @@
     <setting file="file://$PROJECT_DIR$/application/robot.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/application/robot.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/application/robot_def.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/application/robot_task.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/application/robot_task.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/application/shoot/shoot.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bsp/bsp_tools.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/bsp/bsp_tools.c" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/bsp/dwt/bsp_dwt.c" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bsp/dwt/bsp_dwt.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/modules/algorithm/user_lib.c" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/imu/ins_task.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/motor/DJImotor/dji_motor.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/motor/DJImotor/dji_motor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/modules/motor/DMmotor/dmmotor.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/modules/motor/DMmotor/dmmotor.c" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/motor/LKmotor/LK4005.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/motor/LKmotor/LK4005.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/picture_transmission/picture_transmission.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/referee/referee_UI.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/aerial_robot2027/aerial_robotV1.0/modules/referee/referee_task.c" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/referee/referee_task.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/modules/referee/rm_referee.h" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -104,33 +132,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Makefile 目标.all.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "OpenOCD 下载并运行.basic_framework.elf.executor": "Run",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.advertisement.text.overridden": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/aerial_robot2027/aerial_robotV1.0",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Makefile 目标.all.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;OpenOCD 下载并运行.basic_framework.elf.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;codex/统一cmake&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/aerial_robot2027/aerial_robotV1.0&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\aerial_robot\YueLu-Ver1.0" />
@@ -140,11 +169,6 @@
     <option name="rtosEnabled" value="true" />
   </component>
   <component name="RunManager" selected="OpenOCD 下载并运行.basic_framework.elf">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="basic_framework.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="basic_framework" TARGET_NAME="basic_framework.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="basic_framework" RUN_TARGET_NAME="basic_framework.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -171,6 +195,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile 目标.all" />
         <item itemvalue="Makefile 目标.all" />
       </list>
     </recent_temporary>
@@ -358,6 +383,7 @@
       <workItem from="1779178440204" duration="395000" />
       <workItem from="1779179158735" duration="557000" />
       <workItem from="1779700101140" duration="614000" />
+      <workItem from="1779873309664" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="暂时的最终版本">
       <option name="closed" value="true" />

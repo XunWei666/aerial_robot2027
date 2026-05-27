@@ -76,6 +76,7 @@ Makefile.tmp
 openocd_pipe.log
 
 # Local tool and OS state
+AGENTS.md
 .cache/
 .claude/
 .DS_Store

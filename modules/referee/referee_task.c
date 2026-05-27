@@ -13,7 +13,7 @@
 #include "rm_referee.h"
 #include "referee_UI.h"
 #include "string.h"
-#include "cmsis_os.h"
+#include "cmsis_os2.h"
 
 static Referee_Interactive_info_t *Interactive_data; // UI绘制需要的机器人状态数据
 static referee_info_t *referee_recv_info;            // 接收到的裁判系统数据
@@ -60,7 +60,7 @@ static String_Data_t UI_State_dyn[6];  // 机器人状态,动态先add才能chan
 void MyUIInit()
 {
     if (!referee_recv_info->init_flag)
-        vTaskDelete(NULL); // 如果没有初始化裁判系统则直接删除ui任务
+        osThreadExit(); // 如果没有初始化裁判系统则直接删除ui任务
     while (referee_recv_info->GameRobotState.robot_id == 0)
         osDelay(100); // 若还未收到裁判系统数据,等待一段时间后再检查
 
