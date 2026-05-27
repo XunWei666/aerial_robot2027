@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="4" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
@@ -21,39 +21,35 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="basic_framework" targetName="flash_jlink" />
       <config projectName="basic_framework" targetName="basic_framework.elf" />
+      <config projectName="basic_framework" targetName="flash_dap" />
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
-      <configuration PROFILE_NAME="Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Release" />
-      <configuration PROFILE_NAME="Debug - Debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Debug" />
-      <configuration PROFILE_NAME="Release - Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/build/Release" />
+      <configuration PROFILE_NAME="Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/cmake-build-release" />
+      <configuration PROFILE_NAME="Debug - Debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/cmake-build-debug" />
+      <configuration PROFILE_NAME="Release - Release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/cmake-build-release" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="315b636d-acc9-47ff-b6a1-877e076b561b" name="更改" comment="">
+    <list default="true" id="315b636d-acc9-47ff-b6a1-877e076b561b" name="更改" comment="freertos版本修正">
+      <change beforePath="$PROJECT_DIR$/.Doc/VSCode+Ozone使用方法.md" beforeDir="false" afterPath="$PROJECT_DIR$/.Doc/VSCode+Ozone使用方法.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.Doc/架构介绍与开发指南.md" beforeDir="false" afterPath="$PROJECT_DIR$/.Doc/架构介绍与开发指南.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.Doc/让VSCode成为更称手的IDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/.Doc/让VSCode成为更称手的IDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.mxproject" beforeDir="false" afterPath="$PROJECT_DIR$/.mxproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inc/FreeRTOSConfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/FreeRTOSConfig.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32F407XX_FLASH.ld" beforeDir="false" afterPath="$PROJECT_DIR$/STM32F407XX_FLASH.ld" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/freertos.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/freertos.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/robot_task.h" beforeDir="false" afterPath="$PROJECT_DIR$/application/robot_task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basic_framework.ioc" beforeDir="false" afterPath="$PROJECT_DIR$/basic_framework.ioc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bsp/bsp_tools.c" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/bsp_tools.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bsp/bsp_tools.h" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/bsp_tools.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bsp/dwt/bsp_dwt.c" beforeDir="false" afterPath="$PROJECT_DIR$/bsp/dwt/bsp_dwt.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/algorithm/user_lib.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/algorithm/user_lib.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/algorithm/user_lib.h" beforeDir="false" afterPath="$PROJECT_DIR$/modules/algorithm/user_lib.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/motor/DMmotor/dmmotor.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/motor/DMmotor/dmmotor.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/referee/referee_task.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/referee/referee_task.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/referee/rm_referee.c" beforeDir="false" afterPath="$PROJECT_DIR$/modules/referee/rm_referee.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/startup_stm32f407xx.s" beforeDir="false" afterPath="$PROJECT_DIR$/startup_stm32f407xx.s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/tasks.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/tasks.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakePresets.json" beforeDir="false" afterPath="$PROJECT_DIR$/CMakePresets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile.upgrade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/task.ps1" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +81,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;XunWei666&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/XunWei666/aerial_robot2027.git&quot;,
+    &quot;accountId&quot;: &quot;a2fd65c4-a678-4874-a04d-8d1b6cb1fd49&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Src/can.c" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Src/main.c" root0="FORCE_HIGHLIGHTING" />
@@ -134,7 +142,6 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Makefile 目标.all.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;OpenOCD 下载并运行.basic_framework.elf.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
@@ -169,16 +176,25 @@
     <option name="rtosEnabled" value="true" />
   </component>
   <component name="RunManager" selected="OpenOCD 下载并运行.basic_framework.elf">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="basic_framework.elf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="basic_framework" TARGET_NAME="basic_framework.elf" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="basic_framework" RUN_TARGET_NAME="basic_framework.elf">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
-      <makefile filename="$PROJECT_DIR$/Makefile" target="all" workingDirectory="" arguments="">
-        <envs />
-      </makefile>
-      <method v="2" />
+    <configuration name="flash_dap" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="basic_framework" TARGET_NAME="flash_dap" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="flash_jlink" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="basic_framework" TARGET_NAME="flash_jlink" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration name="basic_framework.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="basic_framework" TARGET_NAME="basic_framework.elf" CONFIG_NAME="Debug" version="1" RUN_TARGET_PROJECT_NAME="basic_framework" RUN_TARGET_NAME="basic_framework.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\OpenOCD\STM32F407IGH6\daplink.cfg" reset-type="RUN" download-type="ALWAYS">
@@ -190,15 +206,10 @@
     </configuration>
     <list>
       <item itemvalue="CMake 应用程序.basic_framework.elf" />
-      <item itemvalue="Makefile 目标.all" />
+      <item itemvalue="CMake 应用程序.flash_dap" />
+      <item itemvalue="CMake 应用程序.flash_jlink" />
       <item itemvalue="OpenOCD 下载并运行.basic_framework.elf" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Makefile 目标.all" />
-        <item itemvalue="Makefile 目标.all" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -383,7 +394,7 @@
       <workItem from="1779178440204" duration="395000" />
       <workItem from="1779179158735" duration="557000" />
       <workItem from="1779700101140" duration="614000" />
-      <workItem from="1779873309664" duration="2000" />
+      <workItem from="1779873309664" duration="1271000" />
     </task>
     <task id="LOCAL-00001" summary="暂时的最终版本">
       <option name="closed" value="true" />
@@ -489,7 +500,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777993311397</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="freertos版本修正">
+      <option name="closed" value="true" />
+      <created>1779873491942</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1779873491942</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,7 +530,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="codex/统一cmake" />
                       </list>
                     </value>
                   </entry>
@@ -536,7 +555,8 @@
     <MESSAGE value="图传链路完成" />
     <MESSAGE value="电管通信成功" />
     <MESSAGE value="UI画完" />
-    <option name="LAST_COMMIT_MESSAGE" value="UI画完" />
+    <MESSAGE value="freertos版本修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="freertos版本修正" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

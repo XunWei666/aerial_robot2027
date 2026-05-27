@@ -1,5 +1,9 @@
 # VSCode+Ozone开发STM32的方法
 
+> 所属：士继 DREAMER 战队
+> 作者：XunWei
+> 编码：UTF-8
+
 <center><b><font face="楷体">neozng1@hnu.edu.cn</font></b></center>
 
 [TOC]
@@ -233,7 +237,7 @@ VSCodeUserSetup-x64-1.73.1.exe  # VSCode安装包
 
   打开命令行（win+R，cmd，回车），输入`gcc -v`，如果没有报错，并输出了一堆路径和参数说明安装成功。
   
-  安装完之后，建议将ming的bin文件夹下的mingw32-make.exe复制一份，并将copy更名为make.exe
+  本工程当前只使用 CMake 构建，不需要额外复制构建工具程序。
 
   > 当然，更推荐的方式是将MinGW终端集成到VSCode中，防止类linux环境和Win的环境冲突，特别是你的电脑中安装了其他工具链的时候，如MSVC、LLVM等。
 
@@ -255,7 +259,7 @@ VSCodeUserSetup-x64-1.73.1.exe  # VSCode安装包
 
 - **CubeMX生成代码**：
 
-  在project manager标签页工具链选择makefile
+  本仓库已经维护 CMake 构建入口。若重新生成 CubeMX 代码，请保留根目录 CMakeLists.txt 作为唯一工程构建入口。
 
   ![image-20221112173534670](../.assets/image-20221112173534670.png)
 
@@ -263,7 +267,7 @@ VSCodeUserSetup-x64-1.73.1.exe  # VSCode安装包
 
   ![image-20221112174211802](../.assets/image-20221112174211802.png)
 
-  Makefile就是我们要使用的构建规则文件。
+  CMakeLists.txt 就是我们要使用的构建规则文件。
 
   > **如果你使用basic_framework，不需要重新生成代码。**
 
@@ -289,54 +293,18 @@ VSCode常用快捷键包括：
 
 ### 编译
 
-为了提供完整的代码高亮支持，需要配置Makefile tools插件的make程序路径，`ctrl+,`打开设置，搜索make path找到设置并填写：
-
-![image-20221113152513343](../.assets/image-20221113152513343.png)
-
-> mingw32-make就是下面介绍的make工具（配合makefile替代手动调用gcc）。这里之所以只要输入mingw32-make而不用完整路径，是因为我们将mingw的bin文件夹加入环境变量了，因此系统会在PATH下自动寻找对应项
-
-用VSCode打开创建的项目文件夹，**Makefile Tools插件会询问你是否帮助配置intellisense，选择是。**
-
-此时就可以享受intellicode带来的各种便利的功能了。我们的项目使用Makefile进行编译，在之前的编译介绍中，以GCC编译器为例，如果需要编译一个文件，要输入如下命令：
+CMake 会根据 CMakeLists.txt 递归收集参与编译的源文件和头文件目录，并调用 arm-none-eabi-gcc 完成编译、链接和格式转换。推荐使用 Ninja 生成器：
 
 ```shell
-gcc your_source_code_name.c -o output  # your_source_code_name是待编译的文件名
+cmake -S . -B cmake-build-debug -G Ninja
+cmake --build cmake-build-debug
 ```
 
-然而，你面对的是一个拥有几百个.c和.h文件以及大量的链接库，如果要将所有文件都输入进去，那将是一件苦恼的事。Makefile在gcc命令上提供了一层抽象，通过编写makefile来指定参与编译的文件和编译选项，再使用`make`命令进行编译，它会自动将makefile的内容“翻译”为gcc命令。这样，编译大型项目就不是一件困难的事了。更多关于makefile的指令介绍，参见[附录3](##附录3：Makefile指令介绍)。
+如果本机没有安装 Ninja，可以去掉 `-G Ninja` 使用 CMake 默认生成器。构建完成后，输出目录中会生成 `basic_framework.elf`、`basic_framework.hex`、`basic_framework.bin` 和 `basic_framework.map`。
 
-> 实际上，在使用keil MDK开发的时候，它调用的仍然是底层的arm cc工具链中的编译器和链接器，在配置“魔术棒”添加项目文件以及包含目录的时候，实际做的使其和makefile差不多。keil使用的参数可以在魔棒的C/C++选项卡下看到。
+迁移说明：本工程从此只支持 CMake，原根目录 Makefile 和 Makefile.upgrade 已删除；新增多文件时无需手工维护旧构建脚本，CMake 会递归收集工程源文件。
 
-对于一个已经拥有makefile的项目，打开一个终端，输入：
-
-```shell
-mingw32-make -j24 # -j参数表示参与编译的线程数,一般使用-j12
-```
-
-> 注意，多线程编译的时候输出的报错信息有时候可能会被打乱（多个线程同时往一个terminal写入程序运行的信息），要是看不清报错，请使用`mingw32-make`，不要进行多线程编译。
->
-> 我对make的编译命令进行了静默处理，只输出error和warning以及最后的生成文件信息。如果想要解除静默（就是下面所说的“你可以看到大致如下的输出”），需要修改Makefile。**本仓库下的makefile中已经用注释标明。**
-
-![image-20221112191712534](../.assets/image-20221112191712534.png)
-
-就会开始编译了。你可以看到大致如下的输出：
-
-```shell
-arm-none-eabi-gcc -c -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -DUSE_HAL_DRIVER -DSTM32F407xx -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -IHAL_N_Middlewares/Inc -IHAL_N_Middlewares/Drivers/STM32F4xx_HAL_Driver/Inc -IHAL_N_Middlewares/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IHAL_N_Middlewares/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IHAL_N_Middlewares/Drivers/CMSIS/Include -IHAL_N_Middlewares/Drivers/CMSIS/DSP/Include -IHAL_N_Middlewares/Middlewares/ST/STM32_USB_Device_Library/Core/Inc -IHAL_N_Middlewares/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -IHAL_N_Middlewares/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -IHAL_N_Middlewares/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -IHAL_N_Middlewares/Middlewares/Third_Party/FreeRTOS/Source/include -IHAL_N_Middlewares/Middlewares/Third_Party/FreeRTOS/Source/include -IHAL_N_Middlewares/Middlewares/Third_Party/SEGGER/RTT -IHAL_N_Middlewares/Middlewares/Third_Party/SEGGER/Config -IHAL_N_Middlewares/Middlewares/ST/ARM/DSP/Inc -Iapplication -Ibsp -Imodules/algorithm -Imodules/imu -Imodules/led_light -Imodules/master_machine -Imodules/motor -Imodules/referee -Imodules/remote -Imodules/super_cap  -Og -Wall -fdata-sections -ffunction-sections -g -gdwarf-2 -MMD -MP -MF"build/stm32f4xx_hal_pwr_ex.d" -Wa,-a,-ad,-alms=build/stm32f4xx_hal_pwr_ex.lst HAL_N_Middlewares/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c -o build/stm32f4xx_hal_pwr_ex.o
-```
-
-仔细看你会发现，make命令根据makefile的内容，调用arm-none-eabi-gcc编译器，传入了一堆的参数以及编译选项然后运行。
-
-最后输出的结果如下：
-
-```shell
-  text    data     bss     dec     hex filename
-  31100     484   35916   67500   107ac build/basic_framework.elf
-arm-none-eabi-objcopy -O ihex build/basic_framework.elf build/basic_framework.hex
-arm-none-eabi-objcopy -O binary -S build/basic_framework.elf build/basic_framework.bin
-```
-
-由于使用了多线程编译，比KEIL的蜗牛单线程要快了不少。以上内容代表了生成的可执行文件的大小以及格式和内容。.elf文件就是我们需要传递给调试器的东西，在[使用VSCode调试](###简单调试)部分会介绍。典型的编译时间大致如下：
+由于使用了并行构建，比 KEIL 的单线程构建要快不少。.elf 文件就是我们需要传递给调试器的东西，在[使用VSCode调试](###简单调试)部分会介绍。典型的编译时间大致如下：
 
 1. 从零开始重新编译：~10s
 2. 修改文件后编译：~3s
@@ -349,9 +317,10 @@ arm-none-eabi-objcopy -O binary -S build/basic_framework.elf build/basic_framewo
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build task",         // 任务标签
-            "type": "shell",               // 任务类型,因为要调用mingw32-make,是在终端(CMD)里运行的,所以是shell任务
-            "command": "mingw32-make -j24",// 要执行的任务命令
+            "label": "build task",
+            "type": "shell",
+            "command": "cmake",
+            "args": ["--build", "cmake-build-debug"],
             "problemMatcher": [],          
             "group": {
                 "kind": "build",
@@ -372,24 +341,14 @@ arm-none-eabi-objcopy -O binary -S build/basic_framework.elf build/basic_framewo
 
 ### 如果你编写了新的代码文件
 
-Makefile的大部分内容在CubeMX初始化的时候就会帮你生成。如果新增了.c的源文件，你需要在`C_SOURCES`中新增：
+只要新的 `.c` 文件位于 `Src/`、`Drivers/`、`Middlewares/`、`bsp/`、`modules/` 或 `application/` 目录下，CMake 会在重新配置时递归收集它。新增头文件目录同理，放入这些目录后会被递归加入包含路径。
 
-![image-20221112192509718](../.assets/image-20221112192509718.png)
+如果构建系统没有立刻发现新文件，请重新执行一次：
 
-换行需要在行尾加反斜杠\\
-
-如果新增了头文件，在`C_INCLUDES`中新增头文件所在的文件夹：
-
-![image-20221112192610543](../.assets/image-20221112192610543.png)
-
-换行需要在行尾加反斜杠\\
-
-**添加完之后，重新编译即可**。
-
-> 和KEIL新增文件的方式很相似，但是更方便。
-
-
-- **另外**，如果你使用的时linux/Unix like/MacOS，则可以直接使用根目录下的Makefile.upgrade（复制替换到Makefile中），我们在其中定义了递归添加源文件和头文件目录的规则，不再需要手动添加新增的源文件和头文件路径。如果你使用windows+mingw/Msys2，则需要在mingw环境下执行编译指令，否则报错（因为makefile中使用了一些shell指令是cmd和powershell不支持的，后续考虑在makefile中添加os判断规则以自动替换目录查找指令）。若你坚持使用cmd/powershell，请参照`Makefile.upgrade`中的注释将makefile修改为对应指令格式以支持该环境下的使用。
+```shell
+cmake -S . -B cmake-build-debug -G Ninja
+cmake --build cmake-build-debug
+```
 
 ### 简单的调试配置
 
@@ -704,201 +663,27 @@ windows菜单搜索J-link license manager，点击添加license，将注册机�
 
 `bsp_log.h`中提供了不同的日志输出接口，包括封装好的三种层级的日志（info warning error），和用户可以自定义输出格式的`PrintLog()`。还提供了一些简单的将浮点数据转化为字符串的函数方便进行日志输出。
 
-## 附录3：Makefile指令介绍
+## 附录3：CMake 构建说明
 
-> 如果想要进一步学习Makefile，可以参考这个链接：[Makefile Tutorial By Example](https://makefiletutorial.com/)。你会发现，当项目越来越大的时候，makefile也会变得复杂起来，这就有了后继者**CMake**。cmake可以根据一定的规则，生成makefile，然后再利用make命令调用gcc进行程序的编译。~~也许以后还会有ccccmake~~
+CMakeLists.txt 会统一描述编译器、芯片架构、FPU、链接脚本、CMSIS-DSP 链接库、源文件递归收集规则和烧录目标。常用命令如下：
 
-```makefile
-# makefile是CubeMX自动生成的,我们需要自己添加新编写的源文件路径和头文件文件夹,也可以额外加入自己需要的参数满足需求
-######################################
-# target
-######################################
-TARGET = basic_framework # 编译生成的目标文件名,如本项目会生成basic_framework.elf/bin/hex三个
-# 注意,makefile会自动生成一个叫@的变量,其值等于TARGET.
-# 在makefile中获取变量的值需要通过$(var_name),即加上括号并在前面使用$
-
-######################################
-# building variables
-######################################
-# debug build?
-DEBUG = 1 # 是否启用debug编译.程序分为DEBUG版和RELEASE版,后者在编译时不会插入调试符号和调试信息相关支持的内容,使得程序运行速度提高.
-# optimization
-OPT = -Og # 编译优化等级,-Og表示调试级,常见的级别请看代码块下面的表格.
-
-
-
-#######################################
-# paths
-#######################################
-# Build path
-BUILD_DIR = build # 编译的中间文件和目标文件存放路径,为了区分项目文件和编译输出,一般构建一个build(构建)文件夹,用于存放上述文件. 这个表达式也在生成了一个BUILD_DIR变量(可以把Makefile当作一种语言)
-
-######################################
-# source
-######################################
-# C sources, 参与编译的C源代码全部放置于此.注意如果换行写需要在行尾空格之后加反斜杠,最后一行不要加
-# p.s. C语言的宏如果不能一行写完,也要在行尾加反斜杠,表示一行没有结束
-C_SOURCES =  \
-HAL_N_Middlewares/Src/main.c \
-HAL_N_Middlewares/Src/gpio.c \
-HAL_N_Middlewares/Src/adc.c \
-HAL_N_Middlewares/Src/can.c 
-
-# ASM sources 汇编源文件,第一个是stm32的启动文件,包含了bootloader的信息使得程序可以找到main函数的入口,第二个文件是添加对segger rtt viewer的支持.
-ASM_SOURCES +=  \
-startup_stm32f407xx.s \
-HAL_N_Middlewares/Middlewares/Third_Party/SEGGER/RTT/SEGGER_RTT_ASM_ARMv7M.s
-
-#######################################
-# binaries, 下面是要执行的指令
-#######################################
-PREFIX = arm-none-eabi-  # 指令之前加的前缀,这里也是申明了一个变量
-# The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
-# either it can be added to the PATH environment variable.
-ifdef GCC_PATH # 和C语言的宏类似,如果在Makefile里定义或给make命令传递了GCC_PATH变量会执行以下内容.但实际上我们执行的是else的内容
-CC = $(GCC_PATH)/$(PREFIX)gcc 
-AS = $(GCC_PATH)/$(PREFIX)gcc -x assembler-with-cpp 
-CP = $(GCC_PATH)/$(PREFIX)objcopy 
-SZ = $(GCC_PATH)/$(PREFIX)size
-else
-# 定义了一个cc变量,其保存的内容实际上是gcc编译器的路径.makefile中要获取一个变量的值,需通过$(var).这里makefile会自动在环境变量里寻找gcc路径.CC里保存的内容是arm-none-eabi-gcc,就是我们添加到环境变量的arm gnu工具链的路径下的一个可执行文件.你可以尝试在cmd中输入arm-none-eabi-gcc,会发现这是一个可执行的程序.之前我们在验证安装的时候就运行了arm-none-eabi-gcc -v命令.
-CC = $(PREFIX)gcc 
-# 定义了一个AS变量,稍后会用于C/ASM混合编译
-AS = $(PREFIX)gcc -x assembler-with-cpp 
-# 定义变量.objcopy能够将目标文件进行格式转换.我们实际上要生成的目标文件是.elf,objcopy可以将其转化为hex和bin格式,用于其他用途.
-CP = $(PREFIX)objcopy 
-# size命令可以获取可执行文件的大小和包含内容信息.
-SZ = $(PREFIX)size  
-endif
-HEX = $(CP) -O ihex # 这里用到了上面定义的CP,命令含义为将其转换成hex,i的前缀表示intel格式
-BIN = $(CP) -O binary -S # 转化为二进制文件
- 
-#######################################
-# CFLAGS, 在编译C语言程序的时候给GCC编译器传入的参数
-#######################################
-# cpu
-CPU = -mcpu=cortex-m4 # 目标CPU类型.我们前面介绍过,不同的平台支持的汇编指令不同,一条相同的C语言表达式在翻译成汇编的时候会有不同的实现.比如8051单片机就只有加法器,因此他的乘除法都是通过多次加法和减法实现的,编译器就要完成这一工作.再比如STM32F4系列拥有浮点运算单元(FPU),可以直接在硬件上实现浮点数的加减法.这里指定编译的目标平台是cortex-m4内核的mcu.
-
-# fpu 上面说了我们的f407是有FPU的,需要传入特殊的参数.fpv4-sp-d16表示float point,m4内核,single presicion, 16个dword(4字节)运算寄存器.
-FPU = -mfpu=fpv4-sp-d16
-
-# float-abi 使用软件还是硬件实现浮点运算.也就是我们说的如果没有FPU就只能使用软件实现浮点运算.这里选择hard硬件
-FLOAT-ABI = -mfloat-abi=hard
-
-# mcu 把上面几个变量合起来弄成一条长的参数
-# Thumb是ARM体系结构中的一种16位指令集,这里-mthumb会启用它,感兴趣的同学可以进一步搜索.
-MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
-
-# macros for gcc
-# AS defines
-AS_DEFS = # 汇编的一些宏定义
-
-# C defines
-C_DEFS =  \  # C语言的宏定义
--DUSE_HAL_DRIVER \ # 使用HAL库.HAL库的许多头文件和源文件里会判断是否定义了这个宏
--DSTM32F407xx \    # HAL库会根据使用的MCU的不同进行条件编译,这是一个很好的封装技术
--DARM_MATH_CM4     # 启用ARM MATH运算库,我们在卡尔曼滤波和最小二乘法的时候会用到矩阵运算
-
-# AS includes
-AS_INCLUDES = -IHAL_N_Middlewares/Inc
-# 汇编包含目录.汇编语言也和C一样可以多个文件联合编译,在没有C语言的时候大家都是利用这种方式开发的.在一些运算资源极其受限的情况下也会直接编写汇编.
-# CubeMX生成的HAL包含目录Inc下有一些头文件里面就包含了一些汇编要用到的头文件
-
-# C includes, C语言的包含目录,将所有参与编译的头文件目录放在这里,注意是目录不需要精确到每一个文件.
-# 不想一行写完记得行尾加\,最后一行不要加
-C_INCLUDES =  \
--IHAL_N_Middlewares/Inc \
--IHAL_N_Middlewares/Drivers/STM32F4xx_HAL_Driver/Inc
-
-
-# compile gcc flags, gcc的编译参数,这些参数自己感兴趣的话去搜索一下.这还将之前定义的一些参数以变量的形式放过来.
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
-CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
-ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
-endif
-
-
-# Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
-
-
-#######################################
-# LDFLAGS,传递给链接器的参数
-#######################################
-# link script
-LDSCRIPT = STM32F407IGHx_FLASH.ld # 需要参与链接的文件.这个文件指明了特定MCU的内存分布情况,使得链接器可以按照此规则进行链接和地址重映射.
-
-# libraries,要添加的库,这里我们要使用编译好的math运算库.在CubeMX里面生成的时候可以在第三方库选择DSP运算库,生成makefile时会自动添加进来.
-LIBS = -lc -lm -lnosys  \
--larm_cortexM4lf_math
-LIBDIR =  \ # 和上一行命令对应,这里引入库的目录,gcc会自动去目录里寻找需要的库文件
--LHAL_N_Middlewares/Drivers/CMSIS/Lib/GCC
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
-
-# default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
-
-
-#######################################
-# build the application
-#######################################
-# list of objects
-# OBJECTS保存了所有.c文件的文件名(不包含后缀),可以理解为一个文件名列表.notdir会判断是否是文件夹
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES))) # 对.c文件进行排序,百分号%是通配符,意为所有.c文件vpath是makefile会搜索的文件的路径.如果最终找不到编译中产生的依赖文件所在的路径且不指定搜索路径，makefile会报错没有规则制定目标(no rule to build target)
-
-# list of ASM program objects
-# 把所有.s文件的文件名加到OBJECTS里面
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES))) # 对.s文件的文件名也进行排序
-
-# 以下是编译命令,命令之前被高亮的@就是静默输出的指令.删除前面的@会将输出显示到命令行.
-# 如@$(CC) -c $(CFLAGS) ...... 去掉第一个@即可.
-
-# 意味根据makefile,在BUILD_DIR变量指定的路径下将参与编译的所有.c文件编译成.o文件
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
- @$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
- # 上面这句话翻译一下实际上是gcc -c -many_param build/xxx -o build
- # 意思是将所有参与编译的文件都列出来,传递一堆编译参数,让他们生成.o文件,并且放在build文件夹下
-# 意为根据makefile,将.s文件编译成.o文件,具体和上一条命令差不多
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
- @$(AS) -c $(CFLAGS) $< -o $@
-# 根据前两步生成的目标文件(.o,这些文件的名字保存在OBJECTS变量里),进行链接生成最终的.elf
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
- @$(CC) $(OBJECTS) $(LDFLAGS) -o $@
- @$(SZ) $@ # 输出生成的.elf文件的大小和格式信息
-
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
- $(HEX) $< $@ # elf转换成hex
- 
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
- $(BIN) $< $@ # 转换成bin
- 
-$(BUILD_DIR): # 如果makefile所处的文件目录下没有build文件夹,这里会新建一个build文件夹.
- @mkdir $@ 
-
-#######################################
-# clean up,清除编译信息,可以在命令行中通过rm -r build执行,实际上就是把build文件夹删掉
-#######################################
-clean:
- rm -r $(BUILD_DIR)
-# 你的makefile可能会使用cmd而不是powershell来调用内核,而cmd不支持rm命令,因此可能要修改为rd (remove directory),cmd传入参数的方式为 /x  ,x为要传入的参数
-
-  
-#######################################
-# dependencies
-#################################
-######
--include $(wildcard $(BUILD_DIR)/*.d) # 包含所有的依赖文件(d=dependency),这是编译产生的中间文件,当hello.c包含hello.h而后者又包含了其他头文件时,会产生一个hello.d,它包含了hello.h中包括的其他的头文件的信息,提供给hello.c使用.
-
-# *** EOF ***
-
+```shell
+cmake -S . -B cmake-build-debug -G Ninja
+cmake --build cmake-build-debug
+cmake --build cmake-build-debug --target flash_dap
+cmake --build cmake-build-debug --target flash_jlink
 ```
 
-另外，我们还在仓库的根目录提供了Makefile.upgrade文件，在该makefile中，我们提供了一些基于命令行的更高级的特性，例如自动源文件索引和头文件目录包含等，使用之后若添加了新的源文件就不再需要手动添加路径了。这里面还增加了一些为嵌入式选择的gcc优化参数。要启用高级特性，将其内容复制到你的makefile即可。
+核心构建参数包括：
+
+- `arm-none-eabi-gcc`：C 和 ASM 编译器。
+- `CMAKE_C_STANDARD 11`：使用 C11。
+- `-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16`：面向 Cortex-M4F 和硬浮点。
+- `STM32F407IGHx_FLASH.ld`：链接脚本。
+- `libCMSISDSP.a`：CMSIS-DSP 静态库。
+- `CMSIS_RTOS_V2/cmsis_os2.c`：CMSIS-RTOS v2 wrapper。
+
+CMake 会生成 `basic_framework.elf`、`basic_framework.hex`、`basic_framework.bin` 和 `basic_framework.map`。如果新增 `.c` 文件或头文件目录，重新配置一次即可让递归收集规则生效。
 
 - **编译优化等级**:
 
@@ -914,32 +699,23 @@ clean:
 
 ## 附录4：VSCode直接烧录代码
 
-有时候你对自己的代码特别自信，不想debug想直接下载代码，那么直接通过openocd或J-Flash即可（随jlink一起安装）。要是觉得这样有点麻烦还要再开一个软件，他们两者都支持通过命令行执行。你可以在vscode的tasks.json中编写一个额外的任务来实现。这里，我通过给Makefile添加伪构建目标来利用make命令执行下载操作：
+有时候你对自己的代码特别自信，不想 debug 想直接下载代码，可以通过 CMake 自定义目标调用 OpenOCD。根目录已经提供 `openocd_dap.cfg` 和 `openocd_jlink.cfg`，对应命令如下：
 
-```makefile
-#######################################
-# download without debugging
-#######################################
-OPENOCD_FLASH_START = 0x08000000 # 如果切换芯片可能需要修改此值
-
-download_dap:
- openocd -f openocd_dap.cfg -c init -c halt -c "flash write_image erase $(BUILD_DIR)/$(TARGET).hex $(OPENOCD_FLASH_START)" -c reset -c shutdown
-
-download_jlink:
- openocd -f openocd_jlink.cfg -c init -c halt -c "flash write_image erase $(BUILD_DIR)/$(TARGET).hex $(OPENOCD_FLASH_START)" -c reset -c shutdown
+```shell
+cmake --build cmake-build-debug --target flash_dap
+cmake --build cmake-build-debug --target flash_jlink
 ```
 
-首先设定了flash烧录区的起始地址，下面两个构建目标分别用于daplink和jlink的下载。我们统一使用openocd进行烧录。命令中，`-c`表明的是启动openocd之后要执行的命令，openocd作为一个gdbserver是用作调试的，因此这里我们在`flash write_image`之后直接`reset`让单片机复位开始运行程序，然后立刻退出调试，从而达到下载程序运行但不调试的目的。
+两个目标都会先依赖 `basic_framework.elf`，构建产物更新后再烧录。OpenOCD 命令中，`-c` 表明启动后要执行的命令；这里在 `flash write_image` 之后直接 `reset` 让单片机复位开始运行程序，然后立刻退出调试，从而达到下载程序运行但不调试的目的。
 
-> 若你认为在makefile中使用伪构建任务不合适，也可以自行在`task.json`中编写一个任务。
-
-接下来我们希望能够直接下载，不要在命令行里面输入`make download_dap`这么复杂的指令，我们可以利用make构建伪造目标来实现命令行命令执行，因此在tasks.json中添加如下两个任务：
+在 tasks.json 中可以添加如下两个任务：
 
 ```json
  {
      "label": "download dap",
      "type": "shell",
-     "command":"make download_dap",
+     "command": "cmake",
+     "args": ["--build", "cmake-build-debug", "--target", "flash_dap"],
      "group": {
       "kind": "build",
       "isDefault": false,
@@ -948,16 +724,16 @@ download_jlink:
  {
      "label": "download jlink",
      "type": "shell",
-     "command":"make download_jlink",
+     "command": "cmake",
+     "args": ["--build", "cmake-build-debug", "--target", "flash_jlink"],
      "group": {
          "kind": "build",
          "isDefault": false,
          }
  },
-// 实际上也可以直接编写命令行指令,他们是等效的
 ```
 
-这样，在工具栏的Terminal页面，就可以选择对应的任务直接下载执行了。你也可以通过快捷键`ctrl+shift+B`唤起任务执行页面进行选择。如果你希望立刻检验你代码修改的效果，在下载之前进行编译，那么在`command`信息下新增加一个`mingw32-make -j24`即可，或者添加一个`preLaunchTask`。对于调试，如果不想点两下想在修改代码之后直接调试，也可以在launch.json中增加`preLaunchTask`（文件中已经添加，需要的话取消注释即可）。
+这样，在工具栏的 Terminal 页面，就可以选择对应的任务直接下载执行了。你也可以通过快捷键 `ctrl+shift+B` 唤起任务执行页面进行选择。对于调试，如果想在修改代码之后直接调试，可以在 launch.json 中保留 `preLaunchTask`。
 
 > 实际上换用arm gnu工具链之后，可以指定多线程编译，因此消耗的时间非常短，建议都加上先编译的选项，不会占用额外的时间。可以把默认task设置成编译后下载，把默认debug设置成编译后调试，提升开发效率。
 
@@ -986,7 +762,7 @@ pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-arm-none-eabi-toolchain mi
 
 注意，如果选用此安装方式，**OpenOCD的可执行文件也会被放在上面这个路径下**，记得稍后在VSCode中配置的时候找到这里。相应的scripts放在`D:\Msys2\mingw64\share\openocd`下。
 
-通过这种方式安装之后，还可以选用ccache加速编译。ccache会根据之前的编译输出建立缓存，使得之后编译时可以直接读取缓存。要开启这个功能，直接在Makefile中搜索PREFIX，将下面一行的内容替代原有内容（即增加ccache在arm-none-eabi-之前）。
+通过这种方式安装之后，还可以选用 ccache 加速编译。ccache 会根据之前的编译输出建立缓存，使得之后编译时可以直接读取缓存。若要启用它，请在 CMake 工具链或 CMakeLists.txt 中配置编译器启动器。
 
 
 
