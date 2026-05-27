@@ -2,7 +2,7 @@
 #include "memory.h"
 #include "general_def.h"
 #include "user_lib.h"
-#include "cmsis_os.h"
+#include "cmsis_os2.h"
 #include "string.h"
 #include "daemon.h"
 #include "stdlib.h"
@@ -10,7 +10,7 @@
 
 static uint8_t idx;
 static DMMotorInstance *dm_motor_instance[DM_MOTOR_CNT];
-static osThreadId dm_task_handle[DM_MOTOR_CNT];
+static osThreadId_t dm_task_handle[DM_MOTOR_CNT];
 /* 两个用于将uint值和float值进行映射的函数,在设定发送值和解析反馈值时使用 */
 static uint16_t float_to_uint(float x, float x_min, float x_max, uint8_t bits)
 {
@@ -117,8 +117,12 @@ void DMMotorOuterLoop(DMMotorInstance *motor, Closeloop_Type_e type)
 }
 
 
-//@Todo: 目前只实现了力控，更多位控PID等请自行添加
-void DMMotorTask(void const *argument)
+/**
+ * @brief 达妙电机独立控制任务入口
+ * @param argument DMMotorInstance 实例指针
+ * @note 当前仍保持原有力矩控制发送逻辑，更多位置控制 PID 模式后续可扩展。
+ */
+void DMMotorTask(void *argument)
 {
     float  pid_ref, set;
     DMMotorInstance *motor = (DMMotorInstance *)argument;
@@ -159,6 +163,10 @@ void DMMotorTask(void const *argument)
         osDelay(2);
     }
 }
+/**
+ * @brief 为已注册的达妙电机创建独立控制任务
+ * @note 仅迁移任务创建接口到 CMSIS-RTOS2，不改变每个电机一个任务的调度逻辑。
+ */
 void DMMotorControlInit()
 {
     char dm_task_name[5] = "dm";
@@ -170,7 +178,11 @@ void DMMotorControlInit()
         char dm_id_buff[2] = {0};
         __itoa(i, dm_id_buff, 10);
         strcat(dm_task_name, dm_id_buff);
-        osThreadDef(dm_task_name, DMMotorTask, osPriorityNormal, 0, 128);
-        dm_task_handle[i] = osThreadCreate(osThread(dm_task_name), dm_motor_instance[i]);
+        const osThreadAttr_t dm_task_attr = {
+            .name = dm_task_name,
+            .stack_size = 128,
+            .priority = osPriorityNormal,
+        };
+        dm_task_handle[i] = osThreadNew(DMMotorTask, dm_motor_instance[i], &dm_task_attr);
     }
 }

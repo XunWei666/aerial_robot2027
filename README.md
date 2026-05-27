@@ -1,5 +1,9 @@
 # YueLu2022/2023 EC basic_framework-dev
 
+> 所属：士继 DREAMER 战队
+> 作者：XunWei
+> 编码：UTF-8
+
 湖南大学RoboMaster跃鹿战队2022-2023电控通用嵌入式框架。
 
 <div align=center>
@@ -250,7 +254,7 @@ app、module和bsp都有相应的rtos任务。其中bsp为创建任务提供了�
 
 工具链会预测ram，ccram以及flash的使用情况，并报告最终二进制文件的大小和存放位置。
 
-随后，通过调试器将开发板连接至你的电脑，点击上方tab页的终端（terminal）->运行任务（run task)，选择download_dap or download_jlink（或你自己编写的stlink/ulink/...），便会开始下载，终端或jFlash中会提示擦除、下载、验证的进度。
+随后，通过调试器将开发板连接至你的电脑，点击上方tab页的终端（terminal）->运行任务（run task)，选择 flash_dap or flash_jlink（或你自己编写的stlink/ulink/...），便会开始下载，终端或jFlash中会提示擦除、下载、验证的进度。
 
 想要调试，在左侧tab页选择合适的调试选项，按F5或图形界面的绿色小三角形按钮，开始调试。当然，调试器的设置也请参考配置文档，主要是将可执行文件路劲加入环境变量的PATH。
 
@@ -298,17 +302,22 @@ app、module和bsp都有相应的rtos任务。其中bsp为创建任务提供了�
 
 ### for pro-user
 
-Makefile提供了脚本化的Makefile.upgrade，使用后者可以获取更好的开发体验。
+CMake 是本工程唯一受支持的构建入口。推荐使用 Ninja 生成器：
 
-可以自行添加需要的编译优化，进行更高级别的定制。 
+```shell
+cmake -S . -B cmake-build-debug -G Ninja
+cmake --build cmake-build-debug
+```
+
+迁移说明：本工程从此只支持 CMake，旧的根目录 Makefile 和 Makefile.upgrade 已删除；新增多文件时无需手工维护旧构建脚本，CMake 会递归收集工程源文件。
+
+可以在 CMakeLists.txt 中自行添加需要的编译优化，进行更高级别的定制。
 
 ST官方现在将HAL放入github维护。想要获取最新的支持，可以自行下载，加入本项目编译。
 
 若希望纯开源使用，可以自定义openocd调试和烧录选项，参考根目录的openocd_dap.cfg和openocd_jlink.cfg。
 
-若希望自己编译特定版本的cmsis-dsp或cmsis-os，请前往官方的github仓库下载，将构建规则加入makefile。
-
-我们还增加了CMakeLists.txt以融入更现代化的构建系统，若你希望使用cmake，相信你有能力配置相关的开发环境。可以参考我们的[***powerful_framework***](https://gitee.com/hnuyuelurm/powerful_framework).
+若希望自己编译特定版本的 cmsis-dsp 或 cmsis-os，请前往官方的 github 仓库下载，并将构建规则加入 CMakeLists.txt。
 
 如果实时系统任务需要的栈空间不够，请在CubeMX初始化配置中增大任务栈。一些freertos支持的高级功能请自行在配置页开启宏定义后重新生成。
 

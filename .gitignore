@@ -65,7 +65,6 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 compile_commands.json
-Makefile.tmp
 
 # Logs and temporary files
 *.log
@@ -76,6 +75,7 @@ Makefile.tmp
 openocd_pipe.log
 
 # Local tool and OS state
+AGENTS.md
 .cache/
 .claude/
 .DS_Store

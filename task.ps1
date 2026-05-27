@@ -1,64 +1,28 @@
-# 推荐安装powershell7 以获得更好的shell体验!
-# 可以添加task.json,或在makefile中增加伪构建目标然后运行make xxx
+param(
+    [ValidateSet("build", "flash_dap", "flash_jlink", "debug_ozone")]
+    [string]$Task = "build",
+    [string]$BuildDir = "cmake-build-debug",
+    [string]$Generator = "Ninja"
+)
 
-JLinkGDBServer:  
+$ErrorActionPreference = "Stop"
+$ProjectRoot = $PSScriptRoot
+$BuildPath = Join-Path $ProjectRoot $BuildDir
 
-        $(Q)JLinkGDBServer -select USB -device $(CHIP) \  
+cmake -S $ProjectRoot -B $BuildPath -G $Generator
 
-        -endian little -if SWD -speed 4000 -noir -LocalhostOnly  
-
-  
-
-debug:  
-
-        $(Q)make  
-
-        $(Q)echo target remote localhost\:2331 > gdb.gdb  
-
-        $(Q)echo monitor reset >> gdb.gdb  
-
-        $(Q)echo monitor halt >> gdb.gdb  
-
-        $(Q)echo load >> gdb.gdb  
-
-        $(Q)echo b main >> gdb.gdb  
-
-        $(Q)echo - >> gdb.gdb  
-
-        $(Q)echo c >> gdb.gdb  
-
-        $(Q)-$(GDB) $(BUILD)/$(TARGET).elf --command=gdb.gdb  
-
-        $(Q)$(RM) gdb.gdb  
-
-debug_ozone:
-        $(Q)ozone ./debug_ozone.jdebug
-  
-
-download:  
-
-        $(Q)make  
-
-        $(Q)echo "h" > jlink.jlink  
-
-        $(Q)echo "loadfile" $(BUILD)/$(TARGET).hex >> jlink.jlink  
-
-        $(Q)echo "r" >> jlink.jlink  
-
-        $(Q)echo "qc" >> jlink.jlink  
-
-        $(Q)$(JLINKEXE) -device $(CHIP) -Speed 4000 -IF SWD -CommanderScript jlink.jlink  
-
-        $(Q)$(RM) jlink.jlink  
-
-  
-
-reset:  
-
-        $(Q)echo "r" >> jlink.jlink  
-
-        $(Q)echo "qc" >> jlink.jlink  
-
-        $(Q)$(JLINKEXE) -device $(CHIP) -Speed 4000 -IF SWD -CommanderScript jlink.jlink  
-
-        $(Q)$(RM) jlink.jlink  
+switch ($Task) {
+    "build" {
+        cmake --build $BuildPath
+    }
+    "flash_dap" {
+        cmake --build $BuildPath --target flash_dap
+    }
+    "flash_jlink" {
+        cmake --build $BuildPath --target flash_jlink
+    }
+    "debug_ozone" {
+        cmake --build $BuildPath
+        ozone "$ProjectRoot\debug_ozone.jdebug"
+    }
+}

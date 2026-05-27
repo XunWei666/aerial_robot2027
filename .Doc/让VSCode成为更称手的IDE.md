@@ -1,5 +1,9 @@
 # 让VSCode变成你熟悉的形状
 
+> 所属：士继 DREAMER 战队
+> 作者：XunWei
+> 编码：UTF-8
+
 VSCode的各种配置如快捷键、高亮颜色、主题、界面形状和位置等（也包括各种插件的设置）可以通过在`ctrl+,`打开的设置页面修改，更好的方式是你已经尝试过的——通过xxx.json文件进行配置。VSCode的配置系统同样通过`.json`文件完成，且存在继承和覆盖的关系。VSCode的底层配置`setting.json`是针对整个VSCode进行设置的，而工作区目录下创建的`.vscode/setting.json`则可以覆盖底层配置。了解了基本的配置结构后，这里将介绍一些入手必备的设置和推荐安装的插件。
 
 [TOC]
@@ -132,5 +136,4 @@ for (size_t i = 0; i < count; i++)
 
 VSCode上最强大的静态检查工具，在VSCode自动静态检查的基础上提供更严格的代码建议，尽可能降低出错的可能。其中也包含了不同语言的最佳实践。
 
-cmake可以通过添加`DCMAKE_EXPORT_COMPILE_COMMANDS=True` 的指令（直接在cmakelists中通过`set()`设定也可以），makefile则通过Makefile Tools插件设置生成`compile_commands.json`的路径。
-
+CMake 可以通过添加 `DCMAKE_EXPORT_COMPILE_COMMANDS=True` 的指令（直接在 CMakeLists.txt 中通过 `set()` 设定也可以）生成 `compile_commands.json`，本工程已经默认开启。
